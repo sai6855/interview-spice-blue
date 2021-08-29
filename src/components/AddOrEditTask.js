@@ -1,10 +1,10 @@
 import { addMinutes, endOfDay, format, isAfter, isValid } from "date-fns";
 import { startOfDay } from "date-fns/esm";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import useCustomSelector from "../CustomHooks/useCustomSelector";
-import { resetTaskState } from "../redux/actions";
+import { resetTaskState, setTask } from "../redux/actions";
 import { deleteTask } from "../redux/thunks";
 import "./AddOrEditTask.css";
 
@@ -44,22 +44,22 @@ const AddOrEditTask = ({
     "task"
   );
 
-  const [taskDetails, setTaskDetails] = useState(task);
+  const taskDetails = task;
 
   const handleChange = (event, value = undefined) =>
-    setTaskDetails((previousState) => ({
-      ...previousState,
-      [event.target.name]: value ? value : event.target.value,
-    }));
-
-  useEffect(() => {
-    setTaskDetails(task);
-  }, [task]);
+    dispatch(
+      setTask({
+        ...task,
+        [event.target.name]: value ? value : event.target.value,
+      })
+    );
 
   const resetState = () => {
     openAddTaskModel();
     dispatch(resetTaskState());
   };
+
+  //console.log(task);
 
   const handleSubmit = (event) => {
     event.preventDefault();
