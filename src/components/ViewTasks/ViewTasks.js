@@ -4,7 +4,25 @@ import "./ViewTasks.css";
 import { AiFillEdit } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { setTask } from "../../redux/actions";
-import { format } from "date-fns";
+import { addMinutes, endOfDay, format, isAfter, startOfDay } from "date-fns";
+
+const secondsToTime = (seconds, interval = 30) => {
+  const options = {};
+
+  let time = startOfDay(new Date());
+  const endTime = endOfDay(new Date());
+
+  while (isAfter(endTime, time)) {
+    const formattedTime = format(time, "HH:mm");
+    const [hours, minutes] = formattedTime.split(":");
+    const value = hours * 60 * 60 + minutes * 60;
+    const label = format(time, "hh:mm aa");
+    options[value] = label;
+    time = addMinutes(time, interval);
+  }
+
+  return options[seconds];
+};
 
 const ViewTasks = ({ openEditTaskModel }) => {
   const [tasks] = useCustomSelector("tasks");
@@ -21,7 +39,7 @@ const ViewTasks = ({ openEditTaskModel }) => {
           {task.task_msg}
         </strong>
         <p>
-          {task.task_date} {format(new Date(task.task_time * 1000), "hh:mm aa")}
+          {task.task_date} {secondsToTime(task.task_time)}
         </p>
       </div>
       <div>
@@ -30,7 +48,7 @@ const ViewTasks = ({ openEditTaskModel }) => {
           onClick={() => {
             dispatch(
               setTask({
-                task_time: new Date(task.task_time * 1000),
+                task_time: task.task_time,
                 task_msg: task.task_msg,
                 task_date: task.task_date,
                 is_completed: task.is_completed,

@@ -11,19 +11,21 @@ export const setUserDetails = (payload) => ({
   payload,
 });
 
-export const setTasks= (payload) => ({
+export const setTasks = (payload) => ({
   type: types.SET_TASKS,
   payload,
 });
 
-export const setTask= (payload) => ({
+export const setTask = (payload) => ({
   type: types.SET_TASK,
   payload,
 });
 
-export const manageLoading= (payload) => ({
+export const manageLoading = (payload) => ({
   type: types.MANAGE_LOADING_STATE,
   payload,
 });
 
-
+export const resetTaskState = () => ({
+  type: types.RESET_TASK_STATE,
+});

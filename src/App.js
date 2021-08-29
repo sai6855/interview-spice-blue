@@ -8,6 +8,7 @@ import * as thunks from "./redux/thunks";
 import useCustomSelector from "./CustomHooks/useCustomSelector";
 import ViewTasks from "./components/ViewTasks/ViewTasks";
 import EditTasks from "./components/EditTasks";
+import { resetTaskState } from "./redux/actions";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,11 +37,16 @@ function App() {
   return (
     <div className="container">
       <div className="tasks">
-        <p>TASKS {tasks.length}</p>
+        <p>
+          TASKS <span className="task-count">{tasks.length}</span>
+        </p>
         <button
           disabled={taskModelState === "add"}
           className="plus"
-          onClick={() => setTaskModelState("add")}
+          onClick={() => {
+            setTaskModelState("add");
+            dispatch(resetTaskState());
+          }}
         >
           +
         </button>

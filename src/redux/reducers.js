@@ -36,6 +36,9 @@ const reducer = (state = initialState, action) => {
     case types.MANAGE_LOADING_STATE:
       return { ...state, isLoading: !state.isLoading };
 
+    case types.RESET_TASK_STATE:
+      return { ...state, task: initialState.task };
+
     default:
       return state;
   }

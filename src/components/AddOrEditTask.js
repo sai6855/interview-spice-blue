@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import useCustomSelector from "../CustomHooks/useCustomSelector";
-import { setTask } from "../redux/actions";
+import { resetTaskState } from "../redux/actions";
 import { deleteTask } from "../redux/thunks";
 import "./AddOrEditTask.css";
 
@@ -15,7 +15,13 @@ const timeOptions = (interval = 30) => {
   const endTime = endOfDay(new Date());
 
   while (isAfter(endTime, time)) {
-    options.push(time);
+    const formattedTime = format(time, "HH:mm");
+    const [hours, minutes] = formattedTime.split(":");
+
+    options.push({
+      value: hours * 60 * 60 + minutes * 60,
+      label: format(time, "hh:mm aa"),
+    });
     time = addMinutes(time, interval);
   }
 
@@ -52,15 +58,7 @@ const AddOrEditTask = ({
 
   const resetState = () => {
     openAddTaskModel();
-    dispatch(
-      setTask({
-        task_msg: "",
-        assigned_user: "",
-        task_date: "",
-        task_time: "",
-        is_completed: 0,
-      })
-    );
+    dispatch(resetTaskState());
   };
 
   const handleSubmit = (event) => {
@@ -71,7 +69,7 @@ const AddOrEditTask = ({
     const payload = {
       ...taskDetails,
       assigned_user: userData.user_id,
-      task_time: new Date(taskDetails.task_time).getTime() / 1000,
+      task_time: Number(taskDetails.task_time),
       time_zone: timeZoneinSeconds,
     };
 
@@ -142,8 +140,8 @@ const AddOrEditTask = ({
           >
             <option disabled hidden />
             {options.map((option) => (
-              <option key={option} value={option}>
-                {format(option, "hh:mm aa")}
+              <option key={option.label} value={option.value}>
+                {option.label}
               </option>
             ))}
           </select>
