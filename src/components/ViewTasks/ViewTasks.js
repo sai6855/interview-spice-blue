@@ -35,10 +35,10 @@ const ViewTasks = ({ openEditTaskModel }) => {
       style={{ padding: "0.75rem 0.5rem" }}
     >
       <div>
-        <strong style={{ display: "block", padding: "0.5rem 0" }}>
+        <strong style={{ display: "block", padding: "0.5rem 0 0.25rem 0" }}>
           {task.task_msg}
         </strong>
-        <p>
+        <p className="task-time">
           {task.task_date} {secondsToTime(task.task_time)}
         </p>
       </div>
