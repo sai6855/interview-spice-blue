@@ -21,6 +21,7 @@ button {
   -o-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+  background-color: white;
 }
 
 .row {

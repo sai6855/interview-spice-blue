@@ -35,35 +35,40 @@ function App() {
   const openAddTaskModel = () => setTaskModelState("add");
 
   return (
-    <div className="container">
-      <div className="tasks">
-        <p>
-          TASKS <span className="task-count">{tasks.length}</span>
-        </p>
-        <button
-          disabled={taskModelState === "add"}
-          className="plus"
-          onClick={() => {
-            setTaskModelState("add");
-            dispatch(resetTaskState());
-          }}
-        >
-          +
-        </button>
+    <div style={{ display: "flex" }}>
+      <div className="sidebar" />
+      <div className="header">
+        <div className="container">
+          <div className="tasks">
+            <p>
+              TASKS <span className="task-count">{tasks.length}</span>
+            </p>
+            <button
+              disabled={taskModelState === "add"}
+              className="plus"
+              onClick={() => {
+                setTaskModelState("add");
+                dispatch(resetTaskState());
+              }}
+            >
+              +
+            </button>
+          </div>
+          <ViewTasks openEditTaskModel={openEditTaskModel} />
+          {taskModelState === "add" && (
+            <AddTask
+              toggleTaskModel={closeTaskModel}
+              openAddTaskModel={openAddTaskModel}
+            />
+          )}
+          {taskModelState === "edit" && (
+            <EditTasks
+              toggleTaskModel={closeTaskModel}
+              openAddTaskModel={openAddTaskModel}
+            />
+          )}
+        </div>
       </div>
-      <ViewTasks openEditTaskModel={openEditTaskModel} />
-      {taskModelState === "add" && (
-        <AddTask
-          toggleTaskModel={closeTaskModel}
-          openAddTaskModel={openAddTaskModel}
-        />
-      )}
-      {taskModelState === "edit" && (
-        <EditTasks
-          toggleTaskModel={closeTaskModel}
-          openAddTaskModel={openAddTaskModel}
-        />
-      )}
     </div>
   );
 }
